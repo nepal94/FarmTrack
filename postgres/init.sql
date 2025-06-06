@@ -1,1 +1,0 @@
--- PostgreSQL Seed Data

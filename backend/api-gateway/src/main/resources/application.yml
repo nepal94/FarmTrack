@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+
+  application:
+    name: api-gateway
+    
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        - id: farm-service
+          uri: lb://farm-service
+          predicates:
+            - Path=/api/farms/**
+          filters:
+            - StripPrefix=0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 10
+  instance:
+    prefer-ip-address: true
+    health-check-url-path: /actuator/health
+    metadata-map:
+      instanceId: api-gateway:${random.value}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

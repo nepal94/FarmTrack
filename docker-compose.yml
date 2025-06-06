@@ -1,0 +1,94 @@
+version: "3.9"
+
+services:
+  # 🐘 PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: farm-postgres
+    environment:
+      POSTGRES_DB: farmdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - farmtrack-net
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 🚜 Farm Service (Spring Boot)
+  farm-service:
+    container_name: farm-service
+    build:
+      context: ./backend/farm-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+    networks:
+      - farmtrack-net
+
+  # 🛠️ PgAdmin (UI for PostgreSQL)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: farm-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@farmtrack.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - farmtrack-net
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  # 🧭 Eureka Server
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./backend/eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - farmtrack-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8761/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # 🚪 API Gateway
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./backend/api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+    networks:
+      - farmtrack-net
+
+networks:
+  farmtrack-net:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  pgadmin-data:
