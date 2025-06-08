@@ -1,6 +1,0 @@
-com\farmtrack\service\controller\FarmServiceController.class
-com\farmtrack\service\FarmApplication.class
-com\farmtrack\service\repository\FarmRepository.class
-com\farmtrack\service\entity\Farm.class
-com\farmtrack\service\controller\FarmController.class
-com\farmtrack\service\service\FarmService.class
