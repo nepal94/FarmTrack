@@ -1,0 +1,16 @@
+<div *ngIf="open" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+  <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 relative animate-fade-in">
+    <button (click)="onClose()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+    <div class="flex flex-col items-center">
+      <div *ngIf="type === 'success'" class="mb-2">
+        <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M8 12l2 2l4-4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </div>
+      <div *ngIf="type === 'error'" class="mb-2">
+        <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </div>
+      <h2 class="text-xl font-bold mb-1" [ngClass]="{'text-green-600': type==='success', 'text-red-600': type==='error'}">{{ title }}</h2>
+      <p class="text-gray-700 text-center mb-2">{{ message }}</p>
+      <button (click)="onClose()" class="mt-2 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<!-- File: src/app/auth/login/login.component.html -->
+<div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+
+  <!-- SVG Illustration -->
+  <div class="w-full md:w-1/2 flex justify-center items-center bg-blue-50 p-4">
+    <svg viewBox="0 0 640 480" fill="none" xmlns="http://www.w3.org/2000/svg"
+         class="w-2/3 md:w-4/5 h-auto" role="img" aria-label="FarmTrack Illustration">
+      <circle cx="320" cy="240" r="200" fill="#def7ff" />
+      <path d="M320 140 a60 60 0 1 0 0.1 0z" fill="#38bdf8" />
+      <rect x="260" y="280" width="120" height="140" rx="15" fill="#0ea5e9" />
+      <text x="320" y="450" text-anchor="middle" fill="#333" font-size="20">FarmTrack Login</text>
+      <foreignObject x="0" y="200" width="640" height="100">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="text-center text-gray-500 text-xl">
+          FarmTrack Illustration
+        </div>
+      </foreignObject>
+    </svg>
+  </div>
+
+  <!-- Login Form -->
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center px-4 py-8">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+          class="w-full max-w-sm space-y-6 bg-white p-8 rounded-xl shadow-xl">
+
+      <app-heading level="h2" text="Login to FarmTrack"></app-heading>
+
+      <!-- Mobile Number -->
+      <app-input
+        label="Mobile Number"
+        type="tel"
+        formControlName="mobile"
+        placeholder="Enter mobile number"
+        [errorMsg]="getErrorMessage('mobile')"
+      ></app-input>
+
+      <!-- Password -->
+      <app-input
+        label="Password"
+        type="password"
+        formControlName="password"
+        placeholder="Enter password"
+        [errorMsg]="getErrorMessage('password')"
+      ></app-input>
+
+      <!-- Remember Me + Forgot -->
+      <div class="flex items-center justify-between">
+        <label class="inline-flex items-center">
+          <input type="checkbox" formControlName="rememberMe" class="form-checkbox text-blue-600" />
+          <span class="ml-2 text-sm text-gray-600">Remember me</span>
+        </label>
+        <a routerLink="/forgot-password" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+      </div>
+
+      <!-- Login Button -->
+      <app-button
+        type="submit"
+        [label]="isLoading ? 'Signing in...' : 'Sign In'"
+        [loading]="isLoading"
+        [fullWidth]="true"
+        [disabled]="loginForm.invalid || isLoading"
+      ></app-button>
+
+      <!-- Divider -->
+      <div class="text-center text-gray-500 text-sm">or</div>
+
+      <!-- OTP & Fingerprint -->
+      <div class="flex flex-col gap-3">
+        <app-button
+          type="button"
+          label="🔐 Login with OTP"
+          [fullWidth]="true"
+          (click)="onOtpLogin()"
+        ></app-button>
+
+        <app-button
+          type="button"
+          label="👆 Login with Fingerprint"
+          [fullWidth]="true"
+          (click)="onFingerprintLogin()"
+        ></app-button>
+      </div>
+
+    </form>
+    <p class="text-center text-sm mt-4">
+      Don't have an account?
+      <a
+        routerLink="/register"
+        class="text-blue-600 hover:underline cursor-pointer"
+        tabindex="0"
+        role="link"
+        [routerLinkActive]="'text-blue-800 font-bold'"
+      >Register</a>
+    </p>
+  </div>
+</div>

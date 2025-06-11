@@ -1,0 +1,7 @@
+<form [formGroup]="form">
+  <app-heading text="OTP Login"></app-heading>
+  <app-input label="Mobile Number" formControlName="mobile"></app-input>
+  <app-button label="Send OTP" (click)="sendOtp()"></app-button>
+  <app-input label="Enter OTP" formControlName="otp"></app-input>
+  <app-button label="Verify OTP" (click)="verifyOtp()"></app-button>
+</form>

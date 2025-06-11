@@ -1,0 +1,14 @@
+<button
+  [attr.type]="type"
+  [class.w-full]="fullWidth"
+  [disabled]="disabled || loading"
+  class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 flex items-center justify-center"
+>
+  <span *ngIf="!loading; else loadingTpl">{{ label }}</span>
+  <ng-template #loadingTpl>
+    <svg class="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+    </svg>
+  </ng-template>
+</button>

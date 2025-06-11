@@ -22,6 +22,10 @@ public class User implements UserDetails {
 
     private String username;
 
+    private String mobile;
+
+    private String email;
+
     private String password;
 
     // Optionally add roles/authorities later
